@@ -1,5 +1,5 @@
-import React, {FormEvent, useCallback, useState} from "react";
-import {Link} from "react-router-dom";
+import React, {FormEvent, useCallback, useMemo, useState} from "react";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import Auth from "../components/Auth";
 import axios from "axios";
 
@@ -17,6 +17,13 @@ export default function LoginPage () {
     [credentials, setCredentials]
   );
 
+  const [searchParams] = useSearchParams();
+  const redirect = useMemo(
+    () => searchParams.get("redirect") || "/",
+    [searchParams]
+  );
+  const navigate = useNavigate();
+
   const login = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -25,8 +32,10 @@ export default function LoginPage () {
           "Authorization": "Basic " + window.btoa(`${credentials.username}:${credentials.password}`)
         }
       });
+
+      navigate(redirect);
     },
-    [credentials]
+    [credentials, navigate, redirect]
   );
 
   return (
