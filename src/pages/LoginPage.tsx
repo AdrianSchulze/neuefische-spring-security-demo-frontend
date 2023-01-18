@@ -9,6 +9,8 @@ export default function LoginPage () {
     password: ""
   });
 
+  const [errors, setErrors] = useState<string[]>([]);
+
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const {name, value} = event.target;
@@ -27,13 +29,23 @@ export default function LoginPage () {
   const login = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      await axios.post("/api/app-users/login", null,{
-        headers: {
-          "Authorization": "Basic " + window.btoa(`${credentials.username}:${credentials.password}`)
-        }
-      });
 
-      navigate(redirect);
+      setErrors([]);
+
+      try {
+        await axios.post("/api/app-users/login", null, {
+          headers: {
+            "Authorization": "Basic " + window.btoa(`${credentials.username}:${credentials.password}`)
+          }
+        });
+
+        navigate(redirect);
+      } catch (e) {
+        setErrors((errors) => [
+          ...errors,
+          "Invalid username or password"
+        ]);
+      }
     },
     [credentials, navigate, redirect]
   );
@@ -41,6 +53,12 @@ export default function LoginPage () {
   return (
     <div className="LoginPage">
       <h1>Login</h1>
+
+      {errors.length > 0 && (
+        <div>
+          {errors.map((error) => <p key={error}>{error}</p>)}
+        </div>
+      )}
 
       <form onSubmit={login}>
         <div>
