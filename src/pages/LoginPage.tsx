@@ -1,5 +1,10 @@
 import React, {FormEvent, useCallback, useMemo, useState} from "react";
-import {Link, useNavigate, useSearchParams} from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams
+} from "react-router-dom";
 import axios from "axios";
 
 export default function LoginPage () {
@@ -24,6 +29,8 @@ export default function LoginPage () {
     [searchParams]
   );
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   const login = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -80,7 +87,7 @@ export default function LoginPage () {
         </div>
 
         <div>
-          <button>Login</button> or <Link to={"/signup"}>sign up here</Link>
+          <button>Login</button> or <Link to={"/signup" + location.search}>sign up here</Link>
         </div>
       </form>
     </div>
