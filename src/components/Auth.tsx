@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Navigate, useLocation} from "react-router-dom";
-import axios from "axios";
+import useAuth from "../hooks/useAuth";
 
 export default function Auth (
   {
@@ -13,21 +13,7 @@ export default function Auth (
 ) {
   const location = useLocation();
 
-  const [user, setUser] = useState<{username: string}|null>(null);
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const user = await axios.get("/api/app-users/me");
-        setUser(user.data);
-      } catch (e) {
-        console.error("You are not logged in!", e);
-      } finally {
-        setIsReady(true);
-      }
-    })();
-  }, []);
+  const {user, isReady} = useAuth();
 
   return !isReady ? null : (
     <>

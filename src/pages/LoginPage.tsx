@@ -1,6 +1,5 @@
 import React, {FormEvent, useCallback, useMemo, useState} from "react";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
-import Auth from "../components/Auth";
 import axios from "axios";
 
 export default function LoginPage () {
@@ -84,12 +83,6 @@ export default function LoginPage () {
           <button>Login</button> or <Link to={"/signup"}>sign up here</Link>
         </div>
       </form>
-
-      <Auth shouldRedirect={false}>
-        <div>
-          Du bist schon eingeloggt!!!!
-        </div>
-      </Auth>
     </div>
   );
 }
