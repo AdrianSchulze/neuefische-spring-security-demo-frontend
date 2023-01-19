@@ -28,12 +28,12 @@ export default function Root () {
           </NoAuth>
         }/>
         <Route path="/" element={
-          <Auth>
+          <Auth roles={["BASIC", "ADMIN"]}>
             <HomePage/>
           </Auth>
         }/>
         <Route path="/counter" element={
-          <Auth>
+          <Auth roles={["BASIC"]}>
             <CounterPage/>
           </Auth>
         }/>
